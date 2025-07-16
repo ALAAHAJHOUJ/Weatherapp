@@ -1,18 +1,41 @@
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+import { styled } from '@mui/material/styles';
 import { useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoSearchCircle } from "react-icons/io5";
-
+import './fichier.css';
 
 function App() {
-  const [hauteur,setHauteur]=useState("130px")
+  const [hauteur,setHauteur]=useState("130px");
+  const [selectedFramework, setSelectedFramework] =useState(null);
+  const pays = [
+
+];
+
+  const RoundedTextField = styled(TextField)({
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '15px',
+  },
+  });
+
+
   return (
-    <div className="App border-[1px] w-full h-full bg-[#182252] flex justify-center items-center overflow-hidden">
-      <div className={"w-[30%]  bg-white rounded-[13px] flex items-start flex-wrap transition-[height] duration-[2s] "} style={{boxShadow:"-1px 1px 47px -6px rgba(255,255,255,0.75)",height:`${hauteur}`}}>
+    <div className="element App border-[1px] w-full h-full flex justify-center">
+      <div className={"element2 min-[0px]:shrink-0 min-[360px]:shrink-[1] min-[0px]:w-[100%] min-[360px]:w-[430px] min-w-[353px]  bg-white rounded-[13px] flex items-start flex-wrap transition-[height] duration-[2s] "} style={{boxShadow:"-1px 1px 47px -6px rgba(255,255,255,0.75)",height:`${hauteur}`}}>
         <div className=" h-[130px] w-[16%] flex justify-center items-center">
-          <FaLocationDot className="scale-[2.5] hover:text-gray-400 cursor-pointer" title="Votre position"></FaLocationDot>
+          <FaLocationDot className="scale-[2.5] translate-x-[-5px] hover:text-gray-400 cursor-pointer" title="Votre position"></FaLocationDot>
         </div>
         <div className=" h-[130px] w-[70%] flex justify-center items-center">
-          <input type="text" autoComplete="off" className="border-[1px] border-black w-[94%] h-[60px] rounded-[10px] pl-4 placeholder:text-center placeholder:translate-x-[-12px] placeholder:text-[20px] text-[20px]" placeholder="saisir le pays" />
+                <Autocomplete
+                  options={pays}
+                  getOptionLabel={(option) => option.label}
+                  onChange={(event, newValue) => setSelectedFramework(newValue)}
+                  sx={{ width: '100%'}}
+                  renderInput={(params) => (
+                    <RoundedTextField {...params} label="Choisissez un pays" variant="outlined"  />
+                  )}
+                />
         </div>
         <div className=" h-[130px] w-[14%] flex justify-center items-center">
           <IoSearchCircle className="scale-[3.4] hover:text-gray-400 cursor-pointer" title="chercher" onClick={  ()=>{setHauteur((prev)=>{if(prev=="130px") return "580px";else return "130px";})}  }></IoSearchCircle>
@@ -27,8 +50,8 @@ function App() {
            </div>
 
            <div className="w-full h-[90px] border-black border-[1px] bg-yellow-400 flex justify-between">
-            <div className="border-[1px] border-black">humidite</div>
-            <div className="border-[1px] border-black">vitesse air</div>
+            <div className="border-[1px] border-black">humidite plus logo</div>
+            <div className="border-[1px] border-black">vitesse air plus logo</div>
            </div>
         </div>:<></>}
 
