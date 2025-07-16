@@ -1,25 +1,14 @@
 @media (min-height: 0px) {
   .element {
-    overflow:hidden;
-  }
-}
-
-
-@media (min-height: 300px) {
-  .element {
     overflow:visible;
   }
 }
 
 
-@media (min-height: 0px) {
+@media (min-height: 590px) {
   .element {
-    align-items: start;
+    overflow:hidden;
   }
 }
 
-@media (min-height: 590px) {
-  .element {
-    align-items: center;
-  }
-}
+
