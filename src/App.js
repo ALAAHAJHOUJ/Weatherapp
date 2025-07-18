@@ -22,7 +22,7 @@ function App() {
    ];
 
   const [hauteur,setHauteur]=useState("130px");
-  const [selectedFramework, setSelectedFramework] =useState(pays);
+  const [listepays, setListepays] =useState(pays);
   const [loading,setLoading]=useState(true);
   const [error,setError]=useState("bien");
   const [notfound,setNotFound]=useState(false);
@@ -60,9 +60,9 @@ function App() {
             </div>
             <div className=" h-[130px] w-[70%] flex justify-center items-center ">
                     <Autocomplete
-                      options={selectedFramework}
+                      options={listepays}
                       getOptionLabel={(option) => option?.label ? option.label : ''}
-                      onChange={(event, newValue) =>{ console.log(newValue);setSelectedFramework(newValue)}}
+                      onChange={(event, newValue) =>{ console.log(newValue);setListepays(newValue)}}
                       sx={{ width: '100%'}}
                       renderInput={(params) => (
                         <RoundedTextField {...params} label="Choisissez un pays" variant="outlined"  />
