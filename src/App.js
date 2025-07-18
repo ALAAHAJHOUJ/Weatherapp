@@ -7,7 +7,7 @@ import { IoSearchCircle } from "react-icons/io5";
 import { motion } from "framer-motion";
 import './fichier.css';
 import error2 from './assets/error2.jpg';
-
+import { TiWeatherStormy } from "react-icons/ti";
 
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
    ];
 
   const [hauteur,setHauteur]=useState("130px");
-  const [listepays, setListepays] =useState(pays);
+  const [selectedpays, setpays] =useState(pays);
   const [loading,setLoading]=useState(true);
   const [error,setError]=useState("bien");
   const [notfound,setNotFound]=useState(false);
@@ -53,16 +53,16 @@ function App() {
   return (
     <div className="element App border-[1px] w-full min-h-[100vh] bg-[#2d2d69] flex justify-center items-center">
       
-      {loading==true?<motion.div className="w-full h-[100px] flex justify-center text-white" animate={{opacity:[1,0,1]}} transition={{duration:1,repeat:Infinity}}><FaLocationDot className="scale-[3] text-white"></FaLocationDot></motion.div>:
-      <div className={"element2 min-[0px]:shrink-0 min-[360px]:shrink-[1] min-[0px]:w-[100%] min-[360px]:w-[430px] min-w-[353px]   bg-white rounded-[13px] flex  flex-wrap transition-[height] duration-[2s] content-start "} style={{boxShadow:"-1px 1px 47px -6px rgba(255,255,255,0.75)",height:`${hauteur}`}}>
+      {loading==true?<motion.div className="w-full h-[100px] flex justify-center text-white" animate={{opacity:[1,0,1]}} transition={{duration:1,repeat:Infinity}}><TiWeatherStormy className="scale-[5] text-white"></TiWeatherStormy></motion.div>:
+      <div className={"element2  min-[0px]:w-[95%] min-[435px]:w-[430px] min-w-[330px]   bg-white rounded-[13px] flex  flex-wrap transition-[height] duration-[2s] content-start "} style={{boxShadow:"-1px 1px 47px -6px rgba(255,255,255,0.75)",height:`${hauteur}`}}>
             <div className=" h-[130px] w-[16%] flex justify-center items-center">
               <FaLocationDot className="scale-[2.5] translate-x-[-5px] hover:text-gray-400 cursor-pointer" title="Votre position"></FaLocationDot>
             </div>
             <div className=" h-[130px] w-[70%] flex justify-center items-center ">
                     <Autocomplete
-                      options={listepays}
+                      options={selectedpays}
                       getOptionLabel={(option) => option?.label ? option.label : ''}
-                      onChange={(event, newValue) =>{ console.log(newValue);setListepays(newValue)}}
+                      onChange={(event, newValue) =>{ console.log(newValue);setpays(newValue)}}
                       sx={{ width: '100%'}}
                       renderInput={(params) => (
                         <RoundedTextField {...params} label="Choisissez un pays" variant="outlined"  />
@@ -80,7 +80,7 @@ function App() {
                   </motion.div>
               </div>
               <div className="w-full h-[100px] flex justify-center mb-5">
-                <div className="border-[1px] border-black w-[200px] h-full flex justify-center items-center text-[20px] font-medium flex-wrap">{error=="erreur"||notfound==true?"Veuillez réssayer":<><div className="w-full text-center">logo</div><div className="w-full text-center">{pression}</div></>}</div>
+                <div className="border-[1px] border-black w-[200px] h-full flex justify-center items-center text-[20px] font-medium flex-wrap">{error=="erreur"||notfound==true?"Veuillez réssayer":<><div className="w-full text-center">logo</div><div className="w-full text-center">pression</div></>}</div>
               </div>
 
               <div className="w-full h-[90px]  flex justify-between">
