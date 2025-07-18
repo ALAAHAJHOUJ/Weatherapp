@@ -6,6 +6,9 @@ import { FaLocationDot } from "react-icons/fa6";
 import { IoSearchCircle } from "react-icons/io5";
 import { motion } from "framer-motion";
 import './fichier.css';
+import error2 from './assets/error2.jpg';
+
+
 
 function App() {
   const pays = [
@@ -16,16 +19,24 @@ function App() {
   {label:"mgdtdfsoc"},
   {label:"mgdfvcoc"},
   {label:"margdfdoc"},
-];
+   ];
 
   const [hauteur,setHauteur]=useState("130px");
   const [selectedFramework, setSelectedFramework] =useState(pays);
   const [loading,setLoading]=useState(true);
+  const [error,setError]=useState("bien");
+  const [notfound,setNotFound]=useState(false);
+  const [temp,setTemp]=useState("");
+  const [humidite,setHumidite]=useState("");
+  const [pression,setPression]=useState("");
+  const [vitesse,setVitesse]=useState("");
+
 
 
   const RoundedTextField = styled(TextField)({
   '& .MuiOutlinedInput-root': {
     borderRadius: '15px',
+
   },
   });
 
@@ -62,17 +73,25 @@ function App() {
               <IoSearchCircle className="scale-[3.4] hover:text-gray-400 cursor-pointer" title="chercher" onClick={  ()=>{setHauteur((prev)=>{if(prev=="130px") return "580px";else return "130px";})}  }></IoSearchCircle>
             </div>
             {hauteur=="580px"? 
-            <div className="w-full flex flex-wrap content-start h-[400px] border-black border-[1px] ">
-              <div className="w-full flex justify-center mb-5 bg-red-400">
-                  <div className="degre border-[1px] border-black w-[150px] h-[150px]">image erreur ou resultat degre</div>
+            <div className="w-full flex flex-wrap content-start h-[400px] ">
+              <div className="w-full flex justify-center mb-5 ">
+                  <motion.div animate={{scale:1}} initial={{scale:0}} transition={{duration:1,delay:1,type:"spring"}} className="degre opacity-[0.7] w-[150px] h-[150px] rounded-[14px] relative overflow-hidden">
+                    {error=="erreur"?<img src={error2} alt="image d'erreur" className="w-full h-full absolute" ></img>:notfound==true?<img src="./assets/not-found.jpg" className="w-full h-full absolute"  alt="image introuvable"></img>:<div className="absolute w-full h-full flex justify-center items-center font-bold text-[32px]">{temp}°C</div>}
+                  </motion.div>
               </div>
-              <div className="w-full h-[100px] border-[1px] border-black flex justify-center bg-green-500 mb-5">
-                <div className="border-[1px] border-black w-[200px] h-full">message err ou pression</div>
+              <div className="w-full h-[100px] flex justify-center mb-5">
+                <div className="border-[1px] border-black w-[200px] h-full flex justify-center items-center text-[20px] font-medium flex-wrap">{error=="erreur"||notfound==true?"Veuillez réssayer":<><div className="w-full text-center">logo</div><div className="w-full text-center">{pression}</div></>}</div>
               </div>
 
-              <div className="w-full h-[90px] border-black border-[1px] bg-yellow-400 flex justify-between">
-                <div className="border-[1px] border-black">humidite plus logo</div>
-                <div className="border-[1px] border-black">vitesse air plus logo</div>
+              <div className="w-full h-[90px]  flex justify-between">
+                <div className="border-[1px] border-black w-[150px] flex justify-center items-center flex-wrap">
+                  <span className="text-[15px]" >humidite</span>
+                  <div className="w-full text-center">logo</div>
+                </div>
+                <div className="border-[1px] border-black w-[150px] flex justify-center items-center flex-wrap">
+                  <span className="text-[15px]">vitesse</span>
+                  <div className="w-full text-center">logo</div>
+                </div>
               </div>
         </div>:<></>}
 
