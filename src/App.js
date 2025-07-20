@@ -60,7 +60,7 @@ function App() {
   let liste;
   let j=0;
   if(value.split()!="")
-  fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&format=json&apiKey=dd9f83fdcfa64c369da1517c0b4c851f`)
+  fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&format=json&apiKey=cle1`)
   .then(response => response.json())
   .then(result =>{let a=result.results.map((ele,key)=>{return {"key":key,"country":ele.country,"coordonnes":ele.bbox}});console.log("tab5");console.log(unique(a));setpays(unique(a))})
   .catch(error =>{console.log('error', error);})
@@ -70,7 +70,7 @@ function App() {
 
 
   const resultat=()=>{
-  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=1.541&lon=1.514&appid=032ebbc33c3e9d03a4ed040ad4bceccc`)
+  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=1.541&lon=1.514&appid=cle2`)
   .then(res=>{console.log(res);if(res.ok==true)return res.json();else throw new Error("une erreur s'est produit")})
   .then(res=>{console.log(res)})
   .catch(error=>{console.log("error",error)})
