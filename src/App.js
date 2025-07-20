@@ -1,7 +1,6 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { styled } from '@mui/material/styles';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import { IoSearchCircle } from "react-icons/io5";
 import { motion } from "framer-motion";
@@ -10,19 +9,11 @@ import error2 from './assets/error2.jpg';
 import { TiWeatherStormy } from "react-icons/ti";
 
 
+
 function App() {
-  const pays = [
-  {label:"maroc"},
-  {label:"magfgfc"},
-  {label:"matarec"},
-  {label:"mahfyteferoc"},
-  {label:"mgdtdfsoc"},
-  {label:"mgdfvcoc"},
-  {label:"margdfdoc"},
-   ];
 
   const [hauteur,setHauteur]=useState("130px");
-  const [selectedpays, setpays] =useState(pays);
+  const [selectedpays, setpays] =useState([]);
   const [loading,setLoading]=useState(true);
   const [error,setError]=useState("bien");
   const [notfound,setNotFound]=useState(false);
@@ -30,15 +21,9 @@ function App() {
   const [humidite,setHumidite]=useState("");
   const [pression,setPression]=useState("");
   const [vitesse,setVitesse]=useState("");
+  const [sugg,setsugg]=useState(true);
 
 
-
-  const RoundedTextField = styled(TextField)({
-  '& .MuiOutlinedInput-root': {
-    borderRadius: '15px',
-
-  },
-  });
 
 
   useEffect(()=>{
@@ -48,6 +33,59 @@ function App() {
 
   },[])
 
+  const verifier=(tab,objet)=>{
+  for(let i=0;i<tab.length;i++)
+  {
+    if(tab[i].country==objet.country) return true;
+  }
+
+  return false;
+  }
+
+  const unique=(tab)=>{
+  let tab1=[];
+  let j=0;
+
+      for(let i=0;i<tab.length;i++)
+      {
+      if(verifier(tab1,tab[i])==false){tab1[j]=tab[i];j++;}
+      }
+
+      return tab1;
+  }
+
+
+
+  const suggestions=(value)=>{
+  let liste;
+  let j=0;
+  if(value.split()!="")
+  fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&format=json&apiKey=dd9f83fdcfa64c369da1517c0b4c851f`)
+  .then(response => response.json())
+  .then(result =>{let a=result.results.map((ele,key)=>{return {"key":key,"country":ele.country,"coordonnes":ele.bbox}});console.log("tab5");console.log(unique(a));setpays(unique(a))})
+  .catch(error =>{console.log('error', error);})
+  }
+
+
+
+
+  const resultat=()=>{
+  fetch(`https://api.openweathermap.org/data/2.5/weather?lat=1.541&lon=1.514&appid=032ebbc33c3e9d03a4ed040ad4bceccc`)
+  .then(res=>{console.log(res);if(res.ok==true)return res.json();else throw new Error("une erreur s'est produit")})
+  .then(res=>{console.log(res)})
+  .catch(error=>{console.log("error",error)})
+  }
+
+
+  const resultat2=()=>{
+
+  }
+
+
+  const recupererPosition=()=>{
+
+
+  }
 
 
   return (
@@ -56,21 +94,26 @@ function App() {
       {loading==true?<motion.div className="w-full h-[100px] flex justify-center text-white" animate={{opacity:[1,0,1]}} transition={{duration:1,repeat:Infinity}}><TiWeatherStormy className="scale-[5] text-white"></TiWeatherStormy></motion.div>:
       <div className={"element2  min-[0px]:w-[95%] min-[435px]:w-[430px] min-w-[330px]   bg-white rounded-[13px] flex  flex-wrap transition-[height] duration-[2s] content-start "} style={{boxShadow:"-1px 1px 47px -6px rgba(255,255,255,0.75)",height:`${hauteur}`}}>
             <div className=" h-[130px] w-[16%] flex justify-center items-center">
-              <FaLocationDot className="scale-[2.5] translate-x-[-5px] hover:text-gray-400 cursor-pointer" title="Votre position"></FaLocationDot>
+              <FaLocationDot onClick={recupererPosition} className="scale-[2.5] translate-x-[-5px] hover:text-gray-400 cursor-pointer" title="Votre position"></FaLocationDot>
             </div>
             <div className=" h-[130px] w-[70%] flex justify-center items-center ">
                     <Autocomplete
                       options={selectedpays}
-                      getOptionLabel={(option) => option?.label ? option.label : ''}
-                      onChange={(event, newValue) =>{ console.log(newValue);setpays(newValue)}}
-                      sx={{ width: '100%'}}
+                      clearOnBlur={false}
+                      getOptionLabel={(option)=>{return option.country }}
+                      fullWidth
+                            sx={{
+                                  '& .MuiOutlinedInput-root': {
+                                    borderRadius: '15px',
+                                  },
+                                }}
                       renderInput={(params) => (
-                        <RoundedTextField {...params} label="Choisissez un pays" variant="outlined"  />
+                        <TextField {...params} onChange={(e)=>{console.log(e.target.value);suggestions(e.target.value)}} label="Choisissez un pays" variant="outlined"  />
                       )}
                     />
             </div>
             <div className=" h-[130px] w-[14%] flex justify-center items-center">
-              <IoSearchCircle className="scale-[3.4] hover:text-gray-400 cursor-pointer" title="chercher" onClick={  ()=>{setHauteur((prev)=>{if(prev=="130px") return "580px";else return "130px";})}  }></IoSearchCircle>
+              <IoSearchCircle className="scale-[3.4] hover:text-gray-400 cursor-pointer" title="chercher" onClick={  ()=>{setHauteur((prev)=>{resultat(); return "580px";})}  }></IoSearchCircle>
             </div>
             {hauteur=="580px"? 
             <div className="w-full flex flex-wrap content-start h-[400px] ">
