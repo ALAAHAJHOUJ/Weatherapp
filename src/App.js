@@ -35,6 +35,8 @@ function App() {
   const lat=useRef("");
   const [nonautorise,setNonautorise]=useState(false);
   const [positionacuelle,setPositionactuelle]=useState(false);
+  const pro=useRef(true);
+  const recherche=useRef(false);
 
   useEffect(()=>{
   setTimeout(() => {
@@ -94,7 +96,7 @@ function App() {
   if( envoyer.current==true)
   fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat.current}&lon=${lon.current}&appid=key2`)
   .then(res=>{console.log(res);if(res.ok==true)return res.json();else {setError("erreur");throw new Error("une erreur s'est produit")}})
-  .then(res=>{console.log(res);console.log(res.main.temp,res.main.pressure,res.main.humidity,res.wind.speed);setTemp((res.main.temp-2273.15).toPrecision(5));setVitesse(res.wind.speed+"");setHumidite(res.main.humidity+"");setPression(res.main.pressure+"")})
+  .then(res=>{console.log(res);console.log(res.main.temp,res.main.pressure,res.main.humidity,res.wind.speed);setTemp((res.main.temp-273.15).toPrecision(5));setVitesse(res.wind.speed+"");setHumidite(res.main.humidity+"");setPression(res.main.pressure+"")})
   .catch(error=>{console.log("error",error)})
   }
 
@@ -137,14 +139,14 @@ function App() {
       {loading==true?<motion.div className="w-full h-[100px] flex justify-center text-white" animate={{opacity:[1,0,1]}} transition={{duration:1,repeat:Infinity}}><TiWeatherStormy className="scale-[5] text-white"></TiWeatherStormy></motion.div>:
       <div className={"element2  min-[0px]:w-[95%] min-[435px]:w-[430px] min-w-[330px]   bg-white rounded-[13px] flex  flex-wrap transition-[height] duration-[2s] content-start "} style={{boxShadow:"-1px 1px 47px -6px rgba(255,255,255,0.75)",height:`${hauteur}`}}>
             <div className=" h-[130px] w-[16%] flex justify-center items-center">
-              <FaLocationDot onClick={recupererPosition} className="scale-[2.5] translate-x-[-5px] hover:text-gray-400 cursor-pointer" title="Votre position"></FaLocationDot>
+              <FaLocationDot onClick={()=>{recherche.current=false;recupererPosition();}} className="scale-[2.5] translate-x-[-5px] hover:text-gray-400 cursor-pointer" title="Votre position"></FaLocationDot>
             </div>
             <div className=" h-[130px] w-[70%] flex justify-center items-center ">
                     <Autocomplete
                       options={selectedpays}
                       clearOnBlur={false}
                       getOptionLabel={(option)=>{return `${option.city} (${option.country})`}}
-                      onChange={(e,value)=>{envoyer.current=true;if(value){valeursaisie.current=value.city;console.log(value);lon.current=value.lon;lat.current=value.lat}}}
+                      onChange={(e,value)=>{envoyer.current=true;recherche.current=true;if(value){valeursaisie.current=value.city;console.log(value);lon.current=value.lon;lat.current=value.lat}}}
                       fullWidth
                             sx={{
                                   '& .MuiOutlinedInput-root': {
@@ -157,10 +159,10 @@ function App() {
                     />
             </div>
             <div className=" h-[130px] w-[14%] flex justify-center items-center">
-              <IoSearchCircle className="scale-[3.4] hover:text-gray-400 cursor-pointer" title="chercher" onClick={()=>{if(envoyer.current==true){setHauteur("580px");resultat();setPositionactuelle(false);}}  }></IoSearchCircle>
+              <IoSearchCircle className="scale-[3.4] hover:text-gray-400 cursor-pointer" title="chercher" onClick={()=>{if(envoyer.current==true && recherche.current==true){pro.current=false;setHauteur("580px");resultat();setPositionactuelle(false);}}  }></IoSearchCircle>
             </div>
         <Erreur error={error}  nettoyer2={()=>{setError(false);}} ></Erreur>
-        <Info current={envoyer.current} hauteur={hauteur} humidite={humidite} temp={temp} vitesse={vitesse} pression={pression} actuelle={positionacuelle}></Info>
+        <Info current={envoyer.current} hauteur={hauteur} humidite={humidite} temp={temp} vitesse={vitesse} pression={pression} actuelle={positionacuelle} pro={pro.current} changer1={()=>{pro.current=false}}></Info>
         <NonAutorise nonautorise={nonautorise}  nettoyer2={()=>{setNonautorise(false);}}></NonAutorise>
 
       </div>

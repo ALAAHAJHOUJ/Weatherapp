@@ -1,17 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { motion } from 'framer-motion';
 import image1 from '../assets/Pression.png';
 import image2 from '../assets/humidite.png';
 import image3 from '../assets/Airspeed.png';
 
 
-function Info({hauteur,current,temp,humidite,pression,vitesse,actuelle}) {
+function Info({hauteur,current,temp,humidite,pression,vitesse,actuelle,pro,changer1}) {
+  useEffect(()=>{
+  changer1();
+  },[])
   return (
     <>
          { hauteur=="580px" && current==true? 
             <div className="w-full flex flex-wrap content-start h-[400px] ">
               <motion.div animate={{scale:1}} initial={{scale:0}} transition={{duration:1,delay:1.5,type:"spring"}} className="w-full flex justify-center mb-5 flex-wrap  h-[160px]">
-                  {actuelle==true?<motion.div initial={{scale:0}} animate={{scale:1}} transition={{duration:1,type:"spring",delay:1}} className='w-full text-center font-bold text-[23px] opacity-[0.7] italic'>Votre Position</motion.div>:<></>}
+                  {actuelle==true?<motion.div initial={pro==true?{scale:0}:{scale:1}} animate={{scale:1}} transition={{duration:1,type:"spring",delay:1}} className='w-full text-center font-bold text-[23px] opacity-[0.7] italic'>Votre Position</motion.div>:<></>}
                   <motion.div animate={{scale:1}} initial={{scale:0}} transition={{duration:1,delay:1,type:"spring"}} className="degre opacity-[0.7] w-[150px] rounded-[14px] relative overflow-hidden">
                     <div className="absolute w-full h-full flex justify-center items-center font-bold text-[32px]">{temp}°C</div>
                   </motion.div>
