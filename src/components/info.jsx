@@ -6,12 +6,16 @@ import image3 from '../assets/Airspeed.png';
 
 
 function Info({hauteur,current,temp,humidite,pression,vitesse,actuelle,pro,changer1}) {
+
+  
   useEffect(()=>{
   changer1();
   },[])
+
+
   return (
     <>
-         { hauteur=="580px" && current==true? 
+         { hauteur=="580px" && current==true ? 
             <div className="w-full flex flex-wrap content-start h-[400px] ">
               <motion.div animate={{scale:1}} initial={{scale:0}} transition={{duration:1,delay:1.5,type:"spring"}} className="w-full flex justify-center mb-5 flex-wrap  h-[160px]">
                   {actuelle==true?<motion.div initial={pro==true?{scale:0}:{scale:1}} animate={{scale:1}} transition={{duration:1,type:"spring",delay:1}} className='w-full text-center font-bold text-[23px] opacity-[0.7] italic'>Votre Position</motion.div>:<></>}
